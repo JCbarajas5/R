@@ -1,0 +1,454 @@
+library(car)
+library(tidyverse)
+library(agricolae)
+library(palmerpenguins)
+library(FSA)
+# Datos
+data("penguins")
+head(penguins)
+anova <- aov(bill_length_mm ~ species, data = penguins)
+summary(anova)
+### Prueba de Tukey
+contraste <- TukeyHSD(anova, "species")
+contraste
+### Prueba de Tukey con la función `HSD.test()` del paquete `agricolae`
+contraste2 <- HSD.test(anova, "species")
+contraste2
+### Prueba de Duncan con la función `duncan.test()` del paquete `agricolae`
+duncan <- duncan.test(anova, "species")
+duncan
+plot(contraste)
+plot(contraste2)
+plot(duncan)
+anova2 <- aov(body_mass_g ~ species, data = penguins)
+summary(anova2)
+contraste3 <- HSD.test(anova2, "species")
+contraste3
+plot(contraste3)
+plot(contraste3,
+main = "Masa corporal por especies")
+resumen <- Summarize(body_mass_g ~ species, data = penguins)
+resumen
+resumen$EE <- resumen$sd / sqrt(resumen$n)
+resumen
+resumen$LIIC95 <- resumen$mean - resumen$EE * 1.96
+resumen$LSIC95 <- resumen$mean + resumen$EE * 1.96
+resumen
+ggplot(resumen, aes(species, mean)) +
+geom_bar()
+ggplot(resumen, aes(species, mean)) +
+geom_col()
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 2)
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.3)
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6)
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black")
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", aes(fill = species))
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", aes(fill = species), show.legend = NULL)
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")))
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange"))
+colors()
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95))
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4)
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies")
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")))
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = 2)
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = 1.7)
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = 1.7)
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = 1)
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = 0)
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -2)
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -1.5)
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -1.5) +
+ylim(c(0,5500))
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -1.5) +
+ylim(c(0,5500)) +
+theme(plot.title = element_text(hjust = 0.5))
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -1.5) +
+ylim(c(0,5500)) +
+theme(plot.title = element_text(hjust = 0.5)) +
+them
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "orange")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -1.5) +
+ylim(c(0,5500)) +
+theme(plot.title = element_text(hjust = 0.5)) +
+theme_classic()
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "darkslategray")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -1.5) +
+ylim(c(0,5500)) +
+theme(plot.title = element_text(hjust = 0.5)) +
+theme_classic()
+ggplot(resumen, aes(species, mean)) +
+geom_point()
+ggplot(resumen, aes(species, mean)) +
+geom_point(shape = 1)
+ggplot(resumen, aes(species, mean)) +
+geom_point(shape = 5)
+ggplot(resumen, aes(species, mean)) +
+geom_point(shape = 14)
+ggplot(resumen, aes(species, mean)) +
+geom_point(shape = 19)
+ggplot(resumen, aes(species, mean)) +
+geom_point(shape = 19, size = 3)
+ggplot(resumen, aes(species, mean)) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray"))
+ggplot(resumen, aes(species, mean)) +
+geom_point(shape = "19", size = 3, color = c("gray", "blue", "darkslategray"))
+ggplot(resumen, aes(species, mean)) +
+geom_point(shape = c("19", ".", "/"), size = 3, color = c("gray", "blue", "darkslategray"))
+ggplot(resumen, aes(species, mean)) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray"))
+ggplot(resumen, aes(species, mean)) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4)
+ggplot(resumen, aes(species, mean)) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2)
+ggplot(resumen, aes(species, mean)) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray"))
+ggplot(resumen, aes(species, mean)) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -1.5) +
+ylim(c(0,5500)) +
+theme(plot.title = element_text(hjust = 0.5)) +
+theme_classic()
+ggplot(resumen, aes(species, mean)) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -1.5) +
+theme(plot.title = element_text(hjust = 0.5)) +
+theme_classic()
+ggplot(resumen, aes(species, mean)) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -2) +
+theme(plot.title = element_text(hjust = 0.5)) +
+theme_classic()
+ggsave("imagenes/contrastepinguinos.jpg")
+head(penguins)
+anova2vars <- aov(body_mass_g ~ species + island)
+anova2vars <- aov(body_mass_g ~ species + island, data = penguins)
+summary(anova2vars)
+contraste2vars <- HSD.test(anova2vars, c("species", "island"))
+contraste2vars
+anovaintvars <- aov(body_mass_g ~ species * island, data = penguins)
+summary(anovaintvars)
+contrasteintvars <- HSD.test(anovaintvars, c("species", "island"))
+contrasteintvars
+kruskal.test(body_mass_g ~ species, data = penguins)
+dunnTest(body_mass_g ~ species, data = penguins)
+kruskal <- kruskal(penguins$body_mass_g, penguins$species)
+kruskal
+plot(kruskal)
+ggplot(resumen, aes(species, mean)) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -2) +
+theme(plot.title = element_text(hjust = 0.5)) +
+theme_classic()
+View(penguins)
+modelo <- lm(flipper_length_mm ~ body_mass_g, data = penguis)
+modelo <- lm(flipper_length_mm ~ body_mass_g, data = penguins)
+summary(modelo)
+pin <- penguins
+pin$masakg <- penguins$body_mass_g / 1000
+head(pin)
+modelo <- lm(flipper_length_mm ~ masakg, data = penguins)
+summary(modelo)
+modelo <- lm(flipper_length_mm ~ masakg, data = penguins)
+summary(modelo)
+modelo <- lm(flipper_length_mm ~ masakg, data = pin)
+summary(modelo)
+modelocat <- lm(flipper_length_mm ~ species, data = penguins)
+summary(modelocat)
+resumen <- Summarize(flipper_length_mm ~ species, data = penguins)
+resumen
+resumen$EE <- resumen$sd / sqrt(resumen$n)
+resumen
+resumen$LIIC95 <- resumen$mean - resumen$EE * 1.96
+resumen$LSIC95 <- resumen$mean + resumen$EE * 1.96
+resumen
+ggplot(resumen, aes(species, mean)) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -2) +
+theme(plot.title = element_text(hjust = 0.5)) +
+theme_classic()
+ggplot(resumen, aes(species, mean)) +
+geom_col(width = 0.6, color = "black", fill = c("gray", "blue", "darkslategray")) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.4) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("c", "b", "a")), vjust = -1.5) +
+ylim(c(0,5500)) +
+theme(plot.title = element_text(hjust = 0.5)) +
+theme_classic()
+ggplot(resumen, aes(species, mean)) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -2) +
+theme(plot.title = element_text(hjust = 0.5)) +
+theme_classic()
+modelocat <- lm(flipper_length_mm ~ species, data = penguins)
+summary(modelocat)
+resumen <- Summarize(body_mass_g ~ species, data = penguins)
+resumen
+resumen$EE <- resumen$sd / sqrt(resumen$n)
+resumen
+resumen$LIIC95 <- resumen$mean - resumen$EE * 1.96
+resumen$LSIC95 <- resumen$mean + resumen$EE * 1.96
+ggplot(resumen, aes(species, mean)) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -2) +
+theme(plot.title = element_text(hjust = 0.5)) +
+theme_classic()
+library(knitr)
+include_graphics("imagenes/correlacion.jpg")
+knitr::opts_chunk$set(echo = TRUE)
+library(car)
+library(tidyverse)
+library(agricolae)
+library(palmerpenguins)
+library(FSA)
+library(car)
+library(tidyverse)
+library(agricolae)
+library(palmerpenguins)
+library(FSA)
+data("penguins")
+head(penguins)
+anova <- aov(bill_length_mm ~ species, data = penguins)
+summary(anova)
+resumen <- Summarize(body_mass_g ~ species, data = penguins)
+resumen
+resumen$EE <- resumen$sd / sqrt(resumen$n)
+resumen
+resumen$LIIC95 <- resumen$mean - resumen$EE * 1.96
+resumen$LSIC95 <- resumen$mean + resumen$EE * 1.96
+resumen
+ggplot(resumen, aes(species, mean)) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -2) +
+theme(plot.title = element_text(hjust = 0.5)) +
+theme_classic()
+# Tener cuidado con el orden de las variables, primero va la variable respuesta (dependiente) y luego la variable predictora (independiente)
+anova <- aov(bill_length_mm ~ species, data = penguins)
+summary(anova)
+## Con el error estándar podemos calcular el intervalo de confianza al 95%
+resumen$IC95 <- resumen$EE * 1.96
+resumen$LIIC95 <- resumen$mean - resumen$EE * 1.96
+resumen$LSIC95 <- resumen$mean + resumen$EE * 1.96
+resumen
+plot(contraste2vars)
+contraste2vars <- HSD.test(anova2vars, c("species", "island")) # especificamos cuáles son los grupos
+anova2vars <- aov(body_mass_g ~ species + island, data = penguins)
+contraste2vars <- HSD.test(anova2vars, c("species", "island")) # especificamos cuáles son los grupos
+library(FSA)
+plot(contraste2vars)
+contraste2vars
+contrasteintvars
+summary(modelo)
+## También podemos generar modelos lineales con variables predictoras categóricas
+modelocat <- lm(flipper_length_mm ~ species, data = penguins)
+summary(modelocat)
+knitr::opts_chunk$set(echo = TRUE)
+ggplot(resumen, aes(species, mean)) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -2) +
+theme(plot.title = element_text(hjust = 0.5)) +
+theme_classic()
+library(knitr)
+library(car)
+library(tidyverse)
+library(agricolae)
+library(palmerpenguins)
+library(FSA)
+data("penguins")
+head(penguins)
+anova <- aov(bill_length_mm ~ species, data = penguins) #anova
+summary(anova)
+resumen <- Summarize(body_mass_g ~ species, data = penguins)
+resumen
+resumen$EE <- resumen$sd / sqrt(resumen$n)
+resumen
+resumen$LIIC95 <- resumen$mean - resumen$EE * 1.96
+resumen$LSIC95 <- resumen$mean + resumen$EE * 1.96
+resumen
+ggplot(resumen, aes(species, mean)) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -2) +
+theme(plot.title = element_text(hjust = 0.5)) +
+theme_classic()
+ggplot(resumen, aes(species, mean)) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -2) +
+theme(plot.title = element_text(hjust = 0.5)) +
+theme_classic()
+ggplot(resumen, aes(species, mean)) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -2) +
+theme(plot.title = element_text(hjust = 0.5))
+ggplot(resumen, aes(species, mean)) +
+geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+labs(title = "Masa corporal (g) por especie",
+y = "Masa corporal (g)",
+x = "Especies") +
+geom_text(aes(label = c("b", "b", "a")), vjust = -2) +
+theme_classic() +
+theme(plot.title = element_text(hjust = 0.5))
+library(modeest)
+mlv(datos$altura)
+library(rio)
+datos <- import("datos/medidas_personas.csv")
+datos$sexo <- as.factor(datos$sexo) ## Convertir las variables de tipo caracter (texto) a tipo factor para evitar que R nos indique un error.
+mlv(datos$altura)
+x <- c(tortillas = 300, pan = 250)
+chi <- chisq.test(x)
+chisq.test(x)
+anova2vars <- aov(body_mass_g ~ species + island, data = penguins)
+summary(anova2vars)
+contraste2vars <- HSD.test(anova2vars, c("species", "island")) # especificamos cuáles son los grupos
+contraste2vars
+# ANOVA con interacción entre las variables predictoras
+anovaintvars <- aov(body_mass_g ~ species * island, data = penguins)
+summary(anovaintvars)
+contrasteintvars <- HSD.test(anovaintvars, c("species", "island"))
+contrasteintvars

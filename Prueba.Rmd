@@ -1,0 +1,93 @@
+---
+title: "Prueba"
+author: "Dario Alvarado"
+date: "2023-01-21"
+output:
+  html_document: default
+  word_document: default
+subtitle: RMarkdown
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Alternativa al ANOVA
+## Alternativa al ANOVA
+### Alternativa al ANOVA
+#### Alternativa al ANOVA
+##### Alternativa al ANOVA
+
+*Alternativa al ANOVA*
+**Alternativa al ANOVA**
+_Alternativa al ANOVA_
+__Alternativa al ANOVA__
+
+
+```{r}
+library(knitr)
+```
+
+
+### Paquetes
+```{r, message=FALSE, warning=FALSE}
+library(car)
+library(tidyverse)
+library(agricolae)
+library(palmerpenguins)
+library(FSA)
+```
+
+# Datos
+```{r}
+data("penguins")
+head(penguins)
+```
+
+variable dependiente = respuesta
+variable independiente = predictora
+
+# ANOVA
+
+```{r}
+anova <- aov(bill_length_mm ~ species, data = penguins) #anova
+summary(anova)
+```
+
+```{r}
+resumen <- Summarize(body_mass_g ~ species, data = penguins)
+resumen
+```
+
+```{r}
+resumen$EE <- resumen$sd / sqrt(resumen$n)
+resumen
+```
+
+```{r}
+resumen$LIIC95 <- resumen$mean - resumen$EE * 1.96
+resumen$LSIC95 <- resumen$mean + resumen$EE * 1.96
+```
+
+```{r}
+resumen
+```
+
+```{r}
+ggplot(resumen, aes(species, mean)) +
+  geom_errorbar(aes(ymin = LIIC95, ymax = LSIC95), width = 0.2) +
+  geom_point(shape = 19, size = 3, color = c("gray", "blue", "darkslategray")) +
+  labs(title = "Masa corporal (g) por especie",
+       y = "Masa corporal (g)", 
+       x = "Especies") +
+  geom_text(aes(label = c("b", "b", "a")), vjust = -2) +
+  theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5)) 
+```
+
+$$
+2 + 2
+$$
+
+
+
